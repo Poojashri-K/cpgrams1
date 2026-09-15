@@ -1,0 +1,119 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* CPGRAMS Government of India palette */
+  --color-background: #f4f6fb;
+  --color-foreground: #10182b;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #10182b;
+
+  --color-navy: #0b1f4e;
+  --color-navy-foreground: #ffffff;
+  --color-navy-muted: #1b3168;
+
+  --color-saffron: #ec6408;
+  --color-saffron-foreground: #ffffff;
+
+  --color-green: #1b7a3d;
+  --color-green-foreground: #ffffff;
+
+  --color-primary: #0b1f4e;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #e7ecf6;
+  --color-secondary-foreground: #10182b;
+
+  --color-muted: #eef1f7;
+  --color-muted-foreground: #5a6479;
+
+  --color-accent: #ec6408;
+  --color-accent-foreground: #ffffff;
+
+  --color-destructive: #c22626;
+  --color-destructive-foreground: #ffffff;
+
+  --color-border: #d6dce8;
+  --color-input: #d6dce8;
+  --color-ring: #0b1f4e;
+
+  --color-status-applied: #1b7a3d;
+  --color-status-pending: #c98a00;
+  --color-status-closed: #5a6479;
+
+  --radius: 0.5rem;
+}
+
+/* Font-size scaling controlled via data attribute on <html> */
+html[data-font="sm"] {
+  font-size: 14px;
+}
+html[data-font="base"] {
+  font-size: 16px;
+}
+html[data-font="lg"] {
+  font-size: 18px;
+}
+
+/* High-contrast mode */
+html[data-contrast="high"] {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-card: #ffffff;
+  --color-card-foreground: #000000;
+  --color-navy: #000000;
+  --color-navy-foreground: #ffffff;
+  --color-navy-muted: #000000;
+  --color-primary: #000000;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #000000;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #f0f0f0;
+  --color-muted-foreground: #000000;
+  --color-saffron: #b34700;
+  --color-border: #000000;
+  --color-input: #000000;
+  --color-ring: #000000;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus outline for accessibility (WCAG 2.1) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-saffron);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+html[data-contrast="high"] :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: #000000;
+}
+
+.leaflet-container {
+  font-family: var(--font-sans);
+}
+
+@keyframes pulse-rec {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.animate-rec {
+  animation: pulse-rec 1s ease-in-out infinite;
+}

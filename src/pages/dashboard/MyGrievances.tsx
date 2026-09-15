@@ -1,0 +1,6 @@
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { Badge, Card } from "../../components/ui"
+import { fetchMyGrievances, type Grievance } from "../../lib/services"
+export function MyGrievances(){const [items,setItems]=useState<Grievance[]>([]); useEffect(()=>{let active=true; fetchMyGrievances().then((data)=>{if(active)setItems(data)}); return ()=>{active=false}},[]); return <div><div className="flex flex-wrap items-end justify-between gap-4"><div><h1 className="text-3xl font-bold text-navy">My grievances</h1><p className="mt-2 text-muted-foreground">Track every grievance you have submitted.</p></div><Link className="rounded-md bg-saffron px-4 py-2 font-semibold" to="/file-grievance">File grievance</Link></div><div className="mt-6 space-y-3">{items.map((g)=><Card className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between" key={g.id}><div><p className="font-semibold text-navy">{g.subject}</p><p className="mt-1 text-sm text-muted-foreground">{g.regNumber} · {g.department}</p><p className="mt-1 text-xs text-muted-foreground">Filed {g.filedOn} · Updated {g.lastUpdate}</p></div><Badge tone={g.status === "resolved" ? "green" : "amber"}>{g.status}</Badge></Card>)}</div></div>}
+export default MyGrievances
