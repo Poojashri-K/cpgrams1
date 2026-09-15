@@ -13,7 +13,6 @@ import AdminDashboard from "./pages/AdminDashboard"
 import { Faqs } from "./pages/Faqs"
 import { NotFound } from "./pages/NotFound"
 import { DashboardLayout } from "./pages/dashboard/DashboardLayout"
-import { Overview } from "./pages/dashboard/Overview"
 import { MyGrievances } from "./pages/dashboard/MyGrievances"
 import { Profile } from "./pages/dashboard/Profile"
 import { ChangePassword } from "./pages/dashboard/ChangePassword"
@@ -60,7 +59,7 @@ export default function App() {
               </RequireAuth>
             }
           >
-            <Route index element={<Overview />} />
+            
             <Route path="file-grievance" element={<FileGrievance />} />
             <Route path="check-status" element={<CheckStatus />} />
             <Route path="grievances" element={<MyGrievances />} />
