@@ -7,7 +7,16 @@ import { Footer } from "./Footer"
 export function Layout() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const isDashboardRoute = pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+
+  const isDashboardRoute =
+    pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+
+  const isAdminRoute =
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/")
+
+  const isProtectedPortal = isDashboardRoute || isAdminRoute
+
   return (
     <div className="flex min-h-dvh flex-col">
       <a
@@ -16,12 +25,17 @@ export function Layout() {
       >
         {t("common.skipToContent")}
       </a>
-      {!isDashboardRoute && <TopBar />}
-      {!isDashboardRoute && <Header />}
+
+      {!isProtectedPortal && <TopBar />}
+      {!isProtectedPortal && <Header />}
+
       <main id="main-content" className="flex-1">
         <Outlet />
       </main>
-      {!isDashboardRoute && <Footer />}
+
+      {!isProtectedPortal && <Footer />}
     </div>
   )
 }
+
+export default Layout

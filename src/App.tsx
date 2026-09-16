@@ -19,6 +19,7 @@ import { ChangePassword } from "./pages/dashboard/ChangePassword"
 import { DeleteAccount } from "./pages/dashboard/DeleteAccount"
 import { EditProfile } from "./pages/dashboard/EditProfile"
 import { SectionPage } from "./pages/dashboard/SectionPage"
+import DashboardHome from "./pages/dashboard/DashboardHome"
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -52,25 +53,35 @@ export default function App() {
           <Route path="/faqs" element={<Faqs />} />
 
           <Route
-            path="/dashboard"
-            element={
-              <RequireAuth role="user">
-                <DashboardLayout />
-              </RequireAuth>
-            }
-          >
-            
-            <Route path="file-grievance" element={<FileGrievance />} />
-            <Route path="check-status" element={<CheckStatus />} />
-            <Route path="grievances" element={<MyGrievances />} />
-            <Route path="profile" element={<EditProfile />} />
-            <Route path="profile/view" element={<Profile />} />
-            <Route path="password" element={<ChangePassword />} />
-            <Route path="delete" element={<DeleteAccount />} />
-            <Route path="faqs" element={<Faqs embedded />} />
-            <Route path="appeal" element={<SectionPage type="appeal" />} />
-            <Route path="terms" element={<SectionPage type="terms" />} />
-          </Route>
+  path="/dashboard"
+  element={
+    <RequireAuth role="user">
+      <DashboardLayout />
+    </RequireAuth>
+  }
+>
+  <Route index element={<DashboardHome />} />
+
+  <Route path="file-grievance" element={<FileGrievance />} />
+
+  <Route path="check-status" element={<CheckStatus />} />
+
+  <Route path="grievances" element={<MyGrievances />} />
+
+  <Route path="profile" element={<EditProfile />} />
+
+  <Route path="profile/view" element={<Profile />} />
+
+  <Route path="password" element={<ChangePassword />} />
+
+  <Route path="delete" element={<DeleteAccount />} />
+
+  <Route path="faqs" element={<Faqs embedded />} />
+
+  <Route path="appeal" element={<SectionPage type="appeal" />} />
+
+  <Route path="terms" element={<SectionPage type="terms" />} />
+  </Route>
 
           <Route path="*" element={<NotFound />} />
         </Route>

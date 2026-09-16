@@ -34,8 +34,8 @@ export function AdminLogin() {
 
   return (
     <AuthShell
-      title="Admin login"
-      subtitle="For authorized officers only"
+      title="Admin Login"
+      subtitle="Sign in to access the administration portal"
       admin
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
@@ -47,6 +47,7 @@ export function AdminLogin() {
             id="employeeId"
             value={employeeId}
             onChange={(e) => setEmployeeId(e.target.value)}
+            placeholder="Enter Employee ID"
             required
           />
         </div>
@@ -60,6 +61,7 @@ export function AdminLogin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password"
             required
           />
         </div>
