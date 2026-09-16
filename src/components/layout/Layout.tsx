@@ -16,8 +16,8 @@ export function Layout() {
       >
         {t("common.skipToContent")}
       </a>
-      <TopBar />
-      <Header />
+      {!isDashboardRoute && <TopBar />}
+      {!isDashboardRoute && <Header />}
       <main id="main-content" className="flex-1">
         <Outlet />
       </main>
