@@ -1,0 +1,75 @@
+const mongoose = require("mongoose")
+
+const grievanceSchema = new mongoose.Schema(
+  {
+    regNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    subject: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      default: "General",
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    governmentType: {
+      type: String,
+      default: "Central Government",
+    },
+    state: {
+      type: String,
+      default: "",
+    },
+    district: {
+      type: String,
+      default: "",
+    },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    status: {
+      type: String,
+      enum: [
+        "submitted",
+        "underReview",
+        "inProgress",
+        "resolved",
+        "closed",
+        "rejected",
+      ],
+      default: "submitted",
+    },
+    location: {
+      type: String,
+      default: "",
+    },
+    timeline: [
+      {
+        status: String,
+        date: String,
+        note: String,
+      },
+    ],
+  },
+  { timestamps: true }
+)
+
+module.exports = mongoose.model("Grievance", grievanceSchema)
