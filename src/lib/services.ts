@@ -1,6 +1,6 @@
+import api from "./api"
+
 import {
-  mockGrievances,
-  mockUser,
   DEPARTMENTS,
   STATES,
   type Grievance,
@@ -14,141 +14,103 @@ export const GOVERNMENT_TYPES = [
   "State Government",
 ] as const
 
-export const feedbackItems: {
-  regNumber: string
-  rating: number
-  comment: string
-}[] = []
+export async function loginUser(
+  email: string,
+  password: string,
+) {
+  const response = await api.post("/auth/login", {
+    email,
+    password,
+  })
 
-let grievances: Grievance[] = [...mockGrievances]
-
-function makeRegNumber() {
-  const n = Math.floor(100000 + Math.random() * 899999)
-  return `CPG/2024/${n}`
+  return response.data
 }
 
-export async function loginUser(email: string, password: string) {
-  if (!email || !password) {
-    throw new Error("invalid")
-  }
-
-  const token = `mock.jwt.${btoa(email)}.${Date.now()}`
-
-  return {
-    token,
-    user: {
-      ...mockUser,
-      email,
-    },
-  }
+export async function sendRegistrationOtp(payload: {
+  name: string
+  email: string
+  mobile: string
+  password: string
+}) {
+  const response = await api.post("/auth/send-otp", payload)
+  return response.data
 }
 
 export async function loginAdmin(
   employeeId: string,
   password: string,
 ) {
-  if (!employeeId || !password) {
-    throw new Error("invalid")
-  }
+  const response = await api.post("/admin/login", {
+    employeeId,
+    password,
+  })
 
-  const token = `mock.admin.jwt.${btoa(employeeId)}.${Date.now()}`
-
-  return {
-    token,
-    admin: {
-      id: "a1",
-      name: "Admin Officer",
-      employeeId,
-    },
-  }
+  return response.data
 }
 
-export async function registerUser(payload: {
+export async function verifyRegistrationOtp(email: string, otp: string) {
+  const response = await api.post("/auth/verify-otp", { email, otp })
+  return response.data
+}
+
+export async function fetchProfile() {
+  const response = await api.get("/users/me")
+  return response.data.user
+}
+
+export async function updateProfile(payload: Partial<{
   name: string
   email: string
-  mobile?: string
-  phone?: string
-  password: string
+  mobile: string
+  city: string
+  district: string
+  pinCode: string
+  profilePhoto: string
+}>) {
+  const response = await api.put("/users/me", payload)
+  return response.data
+}
+
+export async function changePassword(payload: {
+  currentPassword: string
+  newPassword: string
 }) {
-  const token = `mock.jwt.${btoa(payload.email)}.${Date.now()}`
-
-  return {
-    token,
-    user: {
-      ...mockUser,
-      ...payload,
-      mobile: payload.mobile || payload.phone || "",
-    },
-  }
+  const response = await api.put("/users/change-password", payload)
+  return response.data
 }
 
-export async function sendOtp(mobile: string) {
-  return {
-    sent: true,
-    mobile,
-    otp: "123456",
-  }
+export async function deleteAccount() {
+  const response = await api.delete("/users/me")
+  return response.data
 }
 
-export async function verifyOtp(otp: string) {
-  return {
-    verified: otp.length === 6,
-  }
-}
-
-export async function fetchMyGrievances() {
-  return grievances
+export async function fetchMyGrievances(): Promise<CitizenGrievance[]> {
+  const response = await api.get("/grievances/my")
+  return response.data.grievances ?? []
 }
 
 export async function fetchGrievanceByReg(regNumber: string) {
-  const found = grievances.find(
-    (g) =>
-      g.regNumber.toLowerCase() ===
-      regNumber.trim().toLowerCase(),
-  )
+  const response = await api.get("/grievances/lookup", {
+    params: { regNumber },
+  })
 
-  if (!found) {
-    throw new Error("notFound")
-  }
-
-  return found
+  return response.data.grievance
 }
 
-export async function submitGrievance(
-  payload: Partial<Grievance>,
-) {
-  const regNumber = makeRegNumber()
-  const today = new Date().toISOString().slice(0, 10)
-
-  const grievance: Grievance = {
-    id: String(Date.now()),
-    regNumber,
-    subject: payload.subject || "",
-    description: payload.description || "",
-    category: payload.category || "",
-    department: payload.department || "",
-    priority: payload.priority || "medium",
-    status: "submitted",
-    filedOn: today,
-    lastUpdate: today,
+export async function submitGrievance(payload: Partial<Grievance>) {
+  const response = await api.post("/grievances", {
+    subject: payload.subject,
+    description: payload.description,
+    category: payload.category,
+    department: payload.department,
+    governmentType: payload.governmentType || "Central Government",
     state: payload.state || "",
     district: payload.district || "",
-    location: payload.location,
-    timeline: [
-      {
-        status: "submitted",
-        date: today,
-        note: "Grievance submitted successfully",
-      },
-    ],
-  }
+    priority: payload.priority || "medium",
+    location: payload.location || "",
+  })
 
-  grievances = [grievance, ...grievances]
-
-  return {
-    regNumber,
-    grievance,
-  }
+  return response.data
 }
 
 export async function submitFeedback(
@@ -156,52 +118,97 @@ export async function submitFeedback(
   rating: number,
   comment: string,
 ) {
-  feedbackItems.push({
+  const response = await api.post("/feedback", {
     regNumber,
     rating,
     comment,
   })
 
-  return {
-    ok: true,
-  }
+  return response.data
+}
+
+export async function getMyFeedback() {
+  const response = await api.get("/feedback")
+  return response.data.feedback ?? []
+}
+
+export async function createAppeal(payload: {
+  grievanceId: string
+  subject: string
+  description: string
+}) {
+  const response = await api.post("/appeals", payload)
+  return response.data
+}
+
+export type AppealRecord = {
+  id: string
+  grievanceId: string
+  regNumber: string
+  subject: string
+  description: string
+  reason?: string
+  status: "pending" | "submitted" | "underReview" | "accepted" | "rejected" | "resolved"
+  createdAt: string
+  adminResponse?: string
+}
+
+export type CitizenGrievance = Grievance & {
+  adminResponse?: string
+}
+
+export type AdminAppealRecord = AppealRecord & {
+  grievanceSubject: string
+  grievanceDescription: string
+  department: string
+  grievanceStatus: string
+  grievanceDate: string | null
+  user: { id: string; name: string; email: string; mobile?: string } | null
+}
+
+export async function fetchMyAppeals(): Promise<AppealRecord[]> {
+  const response = await api.get("/appeals/my")
+  return response.data.appeals ?? []
+}
+
+export async function fetchAllAppeals(): Promise<AdminAppealRecord[]> {
+  const response = await api.get("/appeals/all")
+  return response.data.appeals ?? []
+}
+
+export async function updateAppealReview(
+  id: string,
+  payload: { status: "pending" | "underReview" | "accepted" | "rejected" | "resolved"; adminResponse: string },
+) {
+  const response = await api.patch(`/appeals/${id}/review`, payload)
+  return response.data.appeal as { id: string; status: AdminAppealRecord["status"]; adminResponse: string }
 }
 
 export async function updateGrievanceStatus(
   id: string,
   status: GrievanceStatus,
+  adminResponse = "",
 ) {
-  const item = grievances.find((g) => g.id === id)
-
-  if (!item) {
-    throw new Error("notFound")
-  }
-
-  item.status = status
-  item.lastUpdate = new Date().toISOString().slice(0, 10)
-
-  item.timeline.push({
+  const response = await api.patch(`/admin/grievances/${id}/status`, {
     status,
-    date: item.lastUpdate,
-    note: `Status updated to ${status}`,
+    adminResponse,
   })
 
-  return item
+  return response.data.grievance
 }
 
 export async function fetchAdminData() {
-  return {
-    grievances: [...grievances],
-    users: [{ ...mockUser }],
-    departments: [...DEPARTMENTS],
-    feedback: [...feedbackItems],
-  }
+  const response = await api.get("/admin/dashboard")
+  return response.data
 }
 
 export const authService = {
   login: loginUser,
-  register: registerUser,
-  sendOtp,
+  sendOtp: sendRegistrationOtp,
+  verifyOtp: verifyRegistrationOtp,
 }
 
-export type { Grievance, GrievanceStatus }
+export type {
+  Grievance,
+  GrievanceStatus,
+}

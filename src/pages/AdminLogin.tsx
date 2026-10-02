@@ -27,9 +27,15 @@ export function AdminLogin() {
       })
 
       navigate("/admin")
-    } catch {
-      setError("Invalid Employee ID or password.")
-    }
+    } catch (error: any) {
+  console.error("ADMIN LOGIN ERROR:", error)
+
+  setError(
+    error?.response?.data?.message ||
+    error?.message ||
+    "Admin login failed"
+  )
+}
   }
 
   return (

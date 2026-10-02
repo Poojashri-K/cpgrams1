@@ -61,6 +61,11 @@ const grievanceSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    adminResponse: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     timeline: [
       {
         status: String,

@@ -14,18 +14,20 @@ export interface TimelineEntry {
 
 export interface Grievance {
   id: string
+  user?: string
   regNumber: string
   subject: string
   description: string
   category: string
   department: string
+  governmentType?: string
   priority: "low" | "medium" | "high" | "urgent"
   status: GrievanceStatus
   filedOn: string
   lastUpdate: string
   state: string
   district: string
-  location?: { lat: number; lng: number; label: string }
+  location?: string | { lat: number; lng: number; label: string }
   timeline: TimelineEntry[]
 }
 

@@ -19,6 +19,7 @@ import { ChangePassword } from "./pages/dashboard/ChangePassword"
 import { DeleteAccount } from "./pages/dashboard/DeleteAccount"
 import { EditProfile } from "./pages/dashboard/EditProfile"
 import { SectionPage } from "./pages/dashboard/SectionPage"
+import { AppealPage } from "./pages/dashboard/AppealPage"
 import DashboardHome from "./pages/dashboard/DashboardHome"
 
 function ScrollToTop() {
@@ -78,7 +79,7 @@ export default function App() {
 
   <Route path="faqs" element={<Faqs embedded />} />
 
-  <Route path="appeal" element={<SectionPage type="appeal" />} />
+  <Route path="appeal" element={<AppealPage />} />
 
   <Route path="terms" element={<SectionPage type="terms" />} />
   </Route>

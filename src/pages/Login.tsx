@@ -42,9 +42,15 @@ export function Login() {
       const { user, token } = await authService.login(email, password)
       setSession(user, token)
       navigate("/dashboard")
-    } catch {
-      setError(t("auth.errCredentials"))
-    } finally {
+    } catch (error: any) {
+  console.error("LOGIN ERROR:", error)
+
+  setError(
+    error?.response?.data?.message ||
+    error?.message ||
+    "Login failed"
+  )
+} finally {
       setLoading(false)
     }
   }
@@ -109,11 +115,6 @@ export function Login() {
           </Link>
         </p>
 
-        <p className="rounded-md bg-muted px-3 py-2 text-center text-xs text-muted-foreground">
-          {t("auth.demoHint")}{" "}
-          <strong>citizen@example.com</strong> /{" "}
-          <strong>password</strong>
-        </p>
       </form>
     </AuthShell>
   )

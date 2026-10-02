@@ -195,7 +195,6 @@
     "verifyBtn": "Verify OTP",
     "otpTitle": "Verify your mobile number",
     "otpSubtitle": "Enter the OTP sent to {{phone}}",
-    "otpDemo": "Demo OTP:",
     "editDetails": "Edit details",
     "haveAccount": "Already have an account?",
     "loginHere": "Login here",

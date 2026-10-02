@@ -24,7 +24,6 @@ export function Register() {
   })
   const [captchaOk, setCaptchaOk] = useState(false)
   const [otp, setOtp] = useState("")
-  const [sentOtp, setSentOtp] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -66,11 +65,18 @@ export function Register() {
     setLoading(true)
 
     try {
-      const { otp } = await authService.sendOtp(form.phone)
-      setSentOtp(otp)
+      const result = await authService.sendOtp({
+        name: form.name,
+        email: form.email,
+        mobile: form.phone,
+        password: form.password,
+      })
+      if (result?.success !== true) {
+        throw new Error(result?.message || "Unable to send OTP. Please try again.")
+      }
       setStep("otp")
-    } catch {
-      setError("Unable to send OTP. Please try again.")
+    } catch (error: any) {
+      setError(error?.response?.data?.message || error?.message || "Unable to send OTP. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -80,18 +86,16 @@ export function Register() {
     e.preventDefault()
     setError(null)
 
-    if (otp !== sentOtp) {
-      return setError(t("auth.errOtp"))
-    }
+    if (!/^\d{6}$/.test(otp)) return setError(t("auth.errOtp"))
 
     setLoading(true)
 
     try {
-      const { user, token } = await authService.register(form)
+      const { user, token } = await authService.verifyOtp(form.email, otp)
       setSession(user, token)
       navigate("/dashboard")
-    } catch {
-      setError("Registration failed. Please try again.")
+    } catch (error: any) {
+      setError(error?.response?.data?.message || "Registration failed. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -100,8 +104,8 @@ export function Register() {
   if (step === "otp") {
     return (
       <AuthShell
-        title={t("auth.otpTitle")}
-        subtitle={t("auth.otpSubtitle", { phone: form.phone })}
+        title="Verify your email address"
+        subtitle="Enter the 6-digit OTP sent to your registered email address."
         icon={<ShieldCheck className="h-6 w-6" aria-hidden />}
       >
         <form onSubmit={onVerify} className="space-y-4" noValidate>
@@ -113,10 +117,6 @@ export function Register() {
               {error}
             </div>
           )}
-
-          <div className="rounded-md bg-muted px-3 py-2 text-center text-xs text-muted-foreground">
-            {t("auth.otpDemo")} <strong>{sentOtp}</strong>
-          </div>
 
           <Field>
             <Label htmlFor="otp">{t("auth.otpLabel")}</Label>
@@ -143,11 +143,40 @@ export function Register() {
               : t("auth.verifyBtn")}
           </Button>
 
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            disabled={loading}
+            onClick={async () => {
+              setError(null)
+              setLoading(true)
+              try {
+                const result = await authService.sendOtp({
+                  name: form.name,
+                  email: form.email,
+                  mobile: form.phone,
+                  password: form.password,
+                })
+                if (result?.success !== true) {
+                  throw new Error(result?.message || "Unable to resend OTP. Please try again.")
+                }
+              } catch (error: any) {
+                setError(error?.response?.data?.message || error?.message || "Unable to resend OTP. Please try again.")
+              } finally {
+                setLoading(false)
+              }
+            }}
+          >
+            {t("auth.resendOtp")}
+          </Button>
+
           <button
             type="button"
             onClick={() => {
               setStep("form")
               setError(null)
+              setOtp("")
             }}
             className="w-full text-center text-sm text-primary hover:underline"
           >

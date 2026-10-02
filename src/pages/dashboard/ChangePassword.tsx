@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Button, Card, Input, Label } from "../../components/ui"
 import { Captcha } from "../../components/Captcha"
+import { changePassword } from "../../lib/services"
 
 export function ChangePassword() {
   const { t } = useTranslation()
@@ -11,16 +12,34 @@ export function ChangePassword() {
   const [captchaValid, setCaptchaValid] = useState(false)
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError("")
     setSubmitted(false)
+
     if (!oldPassword || !newPassword || !confirmPassword) return setError("Please complete all password fields.")
     if (newPassword.length < 6) return setError("New password must be at least 6 characters.")
     if (newPassword !== confirmPassword) return setError("New password and confirm password must match.")
     if (!captchaValid) return setError("Please enter the CAPTCHA correctly.")
-    setSubmitted(true)
+
+    setLoading(true)
+
+    try {
+      await changePassword({
+        currentPassword: oldPassword,
+        newPassword,
+      })
+      setSubmitted(true)
+      setOldPassword("")
+      setNewPassword("")
+      setConfirmPassword("")
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Password change failed")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -34,7 +53,7 @@ export function ChangePassword() {
         <div><Label required>CAPTCHA</Label><Captcha onValidChange={setCaptchaValid} /></div>
         {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
         {submitted && <p className="text-sm text-green-700" role="status">Password changed successfully.</p>}
-        <Button type="submit" variant="primary">Change Password</Button>
+        <Button type="submit" variant="primary" disabled={loading}>{loading ? "Updating..." : "Change Password"}</Button>
       </form>
     </Card>
   )

@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Button, Input } from "../../components/ui"
+import { updateProfile } from "../../lib/services"
 import { useAuthStore } from "../../store/auth"
 
 export function EditProfile() {
   const { t } = useTranslation()
   const user = useAuthStore((state) => state.user)
-  const updateUser = useAuthStore((state) => state.updateUser)
+  const setSession = useAuthStore((state) => state.setSession)
   const [form, setForm] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -17,9 +18,12 @@ export function EditProfile() {
     profilePhoto: user?.profilePhoto || "",
   })
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const update = (field: keyof typeof form, value: string) => {
     setSaved(false)
+    setError("")
     setForm((current) => ({ ...current, [field]: value }))
   }
 
@@ -30,10 +34,21 @@ export function EditProfile() {
     reader.readAsDataURL(file)
   }
 
-  function saveChanges(event: React.FormEvent<HTMLFormElement>) {
+  async function saveChanges(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    updateUser(form)
-    setSaved(true)
+    setError("")
+    setLoading(true)
+
+    try {
+      const response = await updateProfile(form)
+      const updatedUser = response.user
+      setSession(updatedUser, localStorage.getItem("cpgrams-token") || "", updatedUser)
+      setSaved(true)
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Profile update failed")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const fields = [
@@ -65,9 +80,10 @@ export function EditProfile() {
           ))}
         </div>
         <div className="flex items-center gap-4">
-          <Button type="submit" variant="primary">{t("profile.save", { defaultValue: "Save Changes" })}</Button>
+          <Button type="submit" variant="primary" disabled={loading}>{loading ? "Saving..." : t("profile.save", { defaultValue: "Save Changes" })}</Button>
           {saved && <span className="text-sm text-green-700">{t("profile.saved", { defaultValue: "Profile updated successfully" })}</span>}
         </div>
+        {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
       </form>
     </section>
   )
