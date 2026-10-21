@@ -1,5 +1,16 @@
 const mongoose = require("mongoose")
 
+const aiRecommendationSchema = new mongoose.Schema(
+  {
+    category: { type: String, required: true },
+    department: { type: String, required: true },
+    modelScore: { type: Number, min: 0, max: 100, required: true },
+    explanation: { type: String, default: "" },
+    experimental: { type: Boolean, default: true },
+  },
+  { _id: false },
+)
+
 const grievanceSchema = new mongoose.Schema(
   {
     regNumber: {
@@ -27,6 +38,10 @@ const grievanceSchema = new mongoose.Schema(
     department: {
       type: String,
       required: true,
+    },
+    aiRecommendation: {
+      type: aiRecommendationSchema,
+      default: undefined,
     },
     governmentType: {
       type: String,

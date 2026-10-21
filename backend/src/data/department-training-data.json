@@ -1,0 +1,76 @@
+{
+  "datasetType": "synthetic-demo-only",
+  "warning": "Hand-authored synthetic examples for development and pipeline verification only. This is not real grievance data and must not be used to claim production accuracy.",
+  "examples": [
+    { "subject": "Ration not distributed", "description": "The fair price shop has not given our family the monthly food ration despite a valid ration card.", "category": "Public Distribution System" },
+    { "subject": "Ration shop overcharging", "description": "The dealer at the public distribution shop demands extra money before issuing subsidized rice and wheat.", "category": "Public Distribution System" },
+    { "subject": "Ration card correction pending", "description": "My application to correct family members on the ration card has been pending at the food supply office for months.", "category": "Public Distribution System" },
+    { "subject": "Biometric failure at fair price shop", "description": "The ration shop fingerprint machine repeatedly rejects my identity and the dealer refuses to provide the monthly quota.", "category": "Public Distribution System" },
+    { "subject": "Missing monthly ration quota", "description": "Several households have not received their essential grain allocation from the government ration outlet this month.", "category": "Public Distribution System" },
+
+    { "subject": "Frequent electricity outages", "description": "Our neighborhood has long unscheduled power cuts every evening and the local electricity office has not repaired the supply.", "category": "Electricity & Power" },
+    { "subject": "Incorrect electricity bill", "description": "The power utility charged an unusually high amount even though our meter reading and household usage have not changed.", "category": "Electricity & Power" },
+    { "subject": "Transformer sparks near homes", "description": "A damaged electrical transformer is sparking beside houses and the electricity board has not sent a repair team.", "category": "Electricity & Power" },
+    { "subject": "New power connection delayed", "description": "I paid the required fee for a household electricity connection but the distribution company has not installed the meter.", "category": "Electricity & Power" },
+    { "subject": "Electricity pole leaning", "description": "A power distribution pole is leaning over the street and exposed wires have remained unsafe after repeated complaints.", "category": "Electricity & Power" },
+
+    { "subject": "No drinking water supply", "description": "Tap water has not reached our residential area for several days and families cannot obtain clean drinking water.", "category": "Water Supply & Sanitation" },
+    { "subject": "Water pipeline leak", "description": "A public water main is leaking into the road and the supply pressure in nearby homes has become very low.", "category": "Water Supply & Sanitation" },
+    { "subject": "Contaminated tap water", "description": "The municipal drinking water is brown and has a foul smell, but no water quality inspection has been arranged.", "category": "Water Supply & Sanitation" },
+    { "subject": "Rural hand pump broken", "description": "The village hand pump used for drinking water has stopped working and residents have no nearby water source.", "category": "Water Supply & Sanitation" },
+    { "subject": "Delayed water connection", "description": "My application for a household water connection remains pending even though the connection charges were paid.", "category": "Water Supply & Sanitation" },
+
+    { "subject": "Large potholes on public road", "description": "Deep potholes on the main road are causing accidents and damage to vehicles, and repair work has not started.", "category": "Roads & Transport" },
+    { "subject": "Highway surface damaged", "description": "A section of the national highway has broken pavement and unsafe craters that need urgent resurfacing.", "category": "Roads & Transport" },
+    { "subject": "Bridge repair required", "description": "The public road bridge has cracked barriers and damaged joints, creating a danger for buses and other traffic.", "category": "Roads & Transport" },
+    { "subject": "Road construction unfinished", "description": "Road construction was abandoned halfway, leaving loose gravel and an unusable route for residents.", "category": "Roads & Transport" },
+    { "subject": "Damaged road not repaired", "description": "The access road has eroded after rain and repeated requests to the roads department have not resulted in repairs.", "category": "Roads & Transport" },
+
+    { "subject": "Medicine unavailable at hospital", "description": "The government hospital pharmacy has no prescribed essential medicines and patients are being asked to buy them privately.", "category": "Health & Family Welfare" },
+    { "subject": "Primary health centre closed", "description": "The public primary health centre is frequently closed during working hours and villagers cannot see a doctor.", "category": "Health & Family Welfare" },
+    { "subject": "Delayed hospital treatment", "description": "My appointment for a necessary procedure at the government hospital has been postponed repeatedly without explanation.", "category": "Health & Family Welfare" },
+    { "subject": "Vaccination service unavailable", "description": "The local public clinic has not conducted the scheduled immunization session for children this month.", "category": "Health & Family Welfare" },
+    { "subject": "Ambulance did not arrive", "description": "The public ambulance service did not respond to an emergency call and the district health helpline did not assist.", "category": "Health & Family Welfare" },
+
+    { "subject": "Scholarship payment delayed", "description": "I have not received my scholarship amount for three months despite submitting all required student documents.", "category": "Education" },
+    { "subject": "School scholarship application pending", "description": "My education scholarship application is verified but the student financial assistance has not been credited to my account.", "category": "Education" },
+    { "subject": "Government school lacks teachers", "description": "The public school has had vacant teaching posts for months and students are missing their regular classes.", "category": "Education" },
+    { "subject": "School certificate not issued", "description": "The government school has not issued my transfer certificate despite repeated applications from my parent.", "category": "Education" },
+    { "subject": "Scholarship funds not credited", "description": "After submitting the required education documents, I am still waiting for the student scholarship installment.", "category": "Education" },
+
+    { "subject": "Pension payment stopped", "description": "My government retirement pension has not been deposited for several months even though life certificate documents were submitted.", "category": "Pension & Retirement Benefits" },
+    { "subject": "Pension application delayed", "description": "The pension office has not processed my retirement benefits claim after receiving all service records.", "category": "Pension & Retirement Benefits" },
+    { "subject": "Incorrect pension amount", "description": "My monthly government pension is lower than the approved amount and the pension authority has not corrected it.", "category": "Pension & Retirement Benefits" },
+    { "subject": "Family pension not started", "description": "The family pension for my deceased government employee spouse has not begun despite filing the required forms.", "category": "Pension & Retirement Benefits" },
+    { "subject": "Retirement arrears pending", "description": "My approved retirement pension arrears and gratuity remain unpaid by the government pension office.", "category": "Pension & Retirement Benefits" },
+
+    { "subject": "Street lights not working", "description": "Street lights on our municipal road have been dark for weeks, making the area unsafe for pedestrians at night.", "category": "Municipal Services" },
+    { "subject": "Garbage not collected", "description": "The municipal sanitation team has not collected waste from our street and rubbish is accumulating near homes.", "category": "Municipal Services" },
+    { "subject": "Blocked city drain", "description": "A neighborhood stormwater drain maintained by the city is blocked and wastewater is flooding the footpath.", "category": "Municipal Services" },
+    { "subject": "Public park maintenance", "description": "The city park equipment is damaged and overgrown vegetation has made the municipal public space unusable.", "category": "Municipal Services" },
+    { "subject": "Municipal property service request", "description": "My request for a municipal birth certificate correction has remained pending at the city office.", "category": "Municipal Services" },
+
+    { "subject": "Police complaint not registered", "description": "The local police station refuses to register my complaint about a theft despite providing the incident details.", "category": "Police & Law Enforcement" },
+    { "subject": "No response to police helpline", "description": "I called the police emergency helpline about a safety incident but no officer came to the location.", "category": "Police & Law Enforcement" },
+    { "subject": "Lost document report delayed", "description": "The police station has not issued an acknowledgment for my lost identity document report after several visits.", "category": "Police & Law Enforcement" },
+    { "subject": "Police investigation stalled", "description": "No progress has been made in the police investigation of my filed case and the investigating officer is unreachable.", "category": "Police & Law Enforcement" },
+    { "subject": "Request for police verification", "description": "My police verification application is pending at the station although all requested identity documents were submitted.", "category": "Police & Law Enforcement" },
+
+    { "subject": "Land record ownership error", "description": "The government land records show an incorrect owner for my plot and the correction request has not been processed.", "category": "Revenue & Land Records" },
+    { "subject": "Mutation application pending", "description": "The revenue office has not completed the land mutation in my name despite submitting the registered deed.", "category": "Revenue & Land Records" },
+    { "subject": "Survey map discrepancy", "description": "The official cadastral map places my boundary incorrectly and the land survey correction is still pending.", "category": "Revenue & Land Records" },
+    { "subject": "Property record copy delayed", "description": "I cannot obtain a certified copy of my government land ownership record from the district revenue office.", "category": "Revenue & Land Records" },
+    { "subject": "Land tax receipt correction", "description": "The land revenue receipt contains an incorrect survey number and the local records department has not amended it.", "category": "Revenue & Land Records" },
+
+    { "subject": "Biometric ration authentication failure", "description": "The fair price shop terminal cannot verify my fingerprint and the dealer refuses to issue the subsidized food allocation.", "category": "Public Distribution System" },
+    { "subject": "Low voltage from distribution line", "description": "Household appliances fail because the electricity distribution line supplies dangerously low voltage through the evening.", "category": "Electricity & Power" },
+    { "subject": "Household water service connection delayed", "description": "The water utility has not connected my home to the drinking water pipeline although the service fee was paid.", "category": "Water Supply & Sanitation" },
+    { "subject": "Potholes on district road", "description": "Repeated vehicle impacts have damaged the paved district road and residents have requested repair from the roads authority.", "category": "Roads & Transport" },
+    { "subject": "Government hospital appointment cancelled", "description": "The public hospital cancelled my specialist appointment several times and has not arranged the needed medical consultation.", "category": "Health & Family Welfare" },
+    { "subject": "Government school classroom shortage", "description": "Students at the public school are crowded into one classroom because the promised additional teaching rooms were not provided.", "category": "Education" },
+    { "subject": "Life certificate pension verification", "description": "My retirement pension remains withheld even though the pension office accepted my annual proof of life document.", "category": "Pension & Retirement Benefits" },
+    { "subject": "Public street lamps failed", "description": "Municipal lighting fixtures beside the town bus stop have stopped illuminating the road at night, creating a pedestrian safety risk.", "category": "Municipal Services" },
+    { "subject": "Police report acknowledgement missing", "description": "The police station has not provided an acknowledgement number for the complaint I registered about a stolen phone.", "category": "Police & Law Enforcement" },
+    { "subject": "Property mutation not recorded", "description": "The revenue authority has not updated the government land register with the new owner after a registered property transfer.", "category": "Revenue & Land Records" }
+  ]
+}

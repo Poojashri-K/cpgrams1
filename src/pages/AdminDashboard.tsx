@@ -318,6 +318,13 @@ export default function AdminDashboard() {
                   <div><dt className="text-muted-foreground">Registration Number</dt><dd>{selectedGrievance.regNumber}</dd></div>
                   <div><dt className="text-muted-foreground">Subject</dt><dd className="font-medium">{selectedGrievance.subject}</dd></div>
                   <div><dt className="text-muted-foreground">Department</dt><dd>{selectedGrievance.department}</dd></div>
+                  {selectedGrievance.aiRecommendation && (
+                    <div>
+                      <dt className="text-muted-foreground">AI recommendation (experimental)</dt>
+                      <dd>{selectedGrievance.aiRecommendation.department} · {selectedGrievance.aiRecommendation.category} · model score {selectedGrievance.aiRecommendation.modelScore ?? "—"}%</dd>
+                      {selectedGrievance.aiRecommendation.explanation && <dd className="text-muted-foreground">{selectedGrievance.aiRecommendation.explanation}</dd>}
+                    </div>
+                  )}
                   <div><dt className="text-muted-foreground">Category</dt><dd>{selectedGrievance.category || "Unavailable"}</dd></div>
                   <div><dt className="text-muted-foreground">Current Status</dt><dd>{selectedGrievance.status}</dd></div>
                   <div><dt className="text-muted-foreground">Grievance Description</dt><dd className="whitespace-pre-wrap leading-6">{selectedGrievance.description || "Unavailable"}</dd></div>

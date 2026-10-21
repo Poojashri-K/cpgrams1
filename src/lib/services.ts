@@ -1,17 +1,19 @@
 import api from "./api"
 
 import {
+  AUTHORITY_DIRECTORY,
   DEPARTMENTS,
   STATES,
   type Grievance,
   type GrievanceStatus,
 } from "./mock-data"
 
-export { DEPARTMENTS, STATES }
+export { AUTHORITY_DIRECTORY, DEPARTMENTS, STATES }
 
 export const GOVERNMENT_TYPES = [
   "Central Government",
   "State Government",
+  "Local Government",
 ] as const
 
 export async function loginUser(
@@ -97,17 +99,84 @@ export async function fetchGrievanceByReg(regNumber: string) {
   return response.data.grievance
 }
 
-export async function submitGrievance(payload: Partial<Grievance>) {
+export async function submitGrievance(
+  payload: Partial<Grievance> & { recommendationGenerated?: boolean },
+) {
   const response = await api.post("/grievances", {
     subject: payload.subject,
     description: payload.description,
     category: payload.category,
     department: payload.department,
+    aiRecommendation: payload.recommendationGenerated,
     governmentType: payload.governmentType || "Central Government",
     state: payload.state || "",
     district: payload.district || "",
     priority: payload.priority || "medium",
     location: payload.location || "",
+  })
+
+  return response.data
+}
+
+export type DuplicateGrievanceMatch = {
+  regNumber: string
+  subject: string
+  category: string
+  status: GrievanceStatus
+  similarity: number
+}
+
+export async function checkGrievanceDuplicates(
+  subject: string,
+  description: string,
+  category: string | undefined,
+  signal?: AbortSignal,
+): Promise<DuplicateGrievanceMatch[]> {
+  const response = await api.post(
+    "/grievances/check-duplicates",
+    { subject, description, category },
+    { signal },
+  )
+
+  return response.data.matches
+}
+
+export type DepartmentRecommendation = {
+  predictedCategory: string | null
+  score: number
+  scoreThreshold: number
+  rankingMargin: number
+  minimumRankingMargin: number
+  manualReviewRequired: boolean
+  jurisdictionMustBeVerified: boolean
+  jurisdictionNotice: string
+  dataNotice: string
+  explanation: string
+  experimental: boolean
+  recommendations: DepartmentAuthorityOption[]
+}
+
+export type DepartmentAuthorityOption = {
+  category: string
+  department: string
+  authorityLevel: "central" | "Tamil Nadu" | "local"
+  requiresLocation: boolean
+  locationPrompt?: string
+  sourceEvidence?: string | null
+  localAuthorityTypes?: string[]
+}
+
+export async function recommendGrievanceDepartment(
+  subject: string,
+  description: string,
+  governmentType: string,
+  state: string,
+): Promise<DepartmentRecommendation> {
+  const response = await api.post("/grievances/recommend-department", {
+    subject,
+    description,
+    governmentType,
+    state,
   })
 
   return response.data

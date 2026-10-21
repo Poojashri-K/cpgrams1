@@ -1,4 +1,19 @@
 const Grievance = require("../models/Grievance")
+const {
+  findSimilarGrievances,
+  DEFAULT_SIMILARITY_THRESHOLD,
+} = require("../services/grievanceSimilarity")
+const departmentRecommendationService = require("../services/departmentRecommendationService")
+
+const MIN_DUPLICATE_DESCRIPTION_LENGTH = 40
+const MAX_DESCRIPTION_LENGTH = 5000
+
+function getSimilarityThreshold() {
+  const configured = Number(process.env.DUPLICATE_SIMILARITY_THRESHOLD)
+  return Number.isFinite(configured) && configured >= 0 && configured <= 1
+    ? Math.max(DEFAULT_SIMILARITY_THRESHOLD, configured)
+    : DEFAULT_SIMILARITY_THRESHOLD
+}
 
 function formatGrievance(item) {
   if (!item) return null
@@ -10,6 +25,7 @@ function formatGrievance(item) {
     description: item.description,
     category: item.category,
     department: item.department,
+    aiRecommendation: item.aiRecommendation || null,
     governmentType: item.governmentType,
     state: item.state || "",
     district: item.district || "",
@@ -56,6 +72,18 @@ exports.createGrievance = async (req, res) => {
       })
     }
 
+    let aiRecommendation = null
+    if (req.body.aiRecommendation) {
+      try {
+        aiRecommendation = departmentRecommendationService.recommendDepartment(subject, description, {
+          governmentType: req.body.governmentType || "Central Government",
+          state: req.body.state || "",
+        })
+      } catch (error) {
+        console.error("Unable to refresh recommendation during submission:", error)
+      }
+    }
+
     let regNumber = createRegNumber()
     let attempts = 0
 
@@ -73,6 +101,15 @@ exports.createGrievance = async (req, res) => {
       description,
       category: category || "General",
       department,
+      aiRecommendation: aiRecommendation?.recommendations?.[0]
+        ? {
+        category: aiRecommendation.recommendations[0].category,
+        department: aiRecommendation.recommendations[0].department,
+            modelScore: aiRecommendation.score,
+            explanation: aiRecommendation.explanation,
+            experimental: aiRecommendation.experimental,
+          }
+        : undefined,
       governmentType: governmentType || "Central Government",
       state: state || "",
       district: district || "",
@@ -95,6 +132,64 @@ exports.createGrievance = async (req, res) => {
     console.error("Create grievance error:", error)
     return res.status(500).json({
       message: "Unable to submit grievance",
+    })
+  }
+}
+
+exports.checkDuplicateGrievances = async (req, res) => {
+  try {
+    const body = req.body || {}
+    const description = typeof body.description === "string"
+      ? req.body.description.trim()
+      : ""
+    const subject = typeof body.subject === "string" ? body.subject.trim() : ""
+    const category = typeof body.category === "string" ? body.category.trim() : ""
+
+    if (
+      description.length < MIN_DUPLICATE_DESCRIPTION_LENGTH ||
+      description.length > MAX_DESCRIPTION_LENGTH ||
+      subject.length > 200
+    ) {
+      return res.status(400).json({
+        message: `Subject must be at most 200 characters and description must be between ${MIN_DUPLICATE_DESCRIPTION_LENGTH} and ${MAX_DESCRIPTION_LENGTH} characters`,
+      })
+    }
+
+    const query = {
+      status: { $nin: ["resolved", "closed", "rejected"] },
+    }
+
+    if (body.excludeGrievanceId) {
+      if (!/^[a-f\d]{24}$/i.test(body.excludeGrievanceId)) {
+        return res.status(400).json({ message: "Invalid grievance ID" })
+      }
+
+      query._id = { $ne: body.excludeGrievanceId }
+    }
+
+    const grievances = await Grievance.find(query)
+      .select("regNumber subject category status description")
+      .lean()
+    const matches = findSimilarGrievances(
+      description,
+      grievances,
+      getSimilarityThreshold(),
+      { subject, category },
+    )
+
+    return res.json({
+      matches: matches.map(({ grievance, similarity }) => ({
+        regNumber: grievance.regNumber,
+        subject: grievance.subject,
+        category: grievance.category,
+        status: grievance.status,
+        similarity: Math.round(similarity * 1000) / 10,
+      })),
+    })
+  } catch (error) {
+    console.error("Check duplicate grievances error:", error)
+    return res.status(500).json({
+      message: "Unable to check for similar grievances",
     })
   }
 }

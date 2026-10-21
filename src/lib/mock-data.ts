@@ -1,3 +1,5 @@
+import grievanceTaxonomy from "../../shared/grievance-taxonomy.json"
+
 export type GrievanceStatus =
   | "submitted"
   | "underReview"
@@ -20,6 +22,13 @@ export interface Grievance {
   description: string
   category: string
   department: string
+  aiRecommendation?: {
+    category: string
+    department: string
+    modelScore?: number
+    explanation?: string
+    experimental?: boolean
+  } | null
   governmentType?: string
   priority: "low" | "medium" | "high" | "urgent"
   status: GrievanceStatus
@@ -31,31 +40,14 @@ export interface Grievance {
   timeline: TimelineEntry[]
 }
 
-export const CATEGORIES = [
-  "Public Distribution System",
-  "Electricity & Power",
-  "Water Supply & Sanitation",
-  "Roads & Transport",
-  "Health & Family Welfare",
-  "Education",
-  "Pension & Retirement Benefits",
-  "Municipal Services",
-  "Police & Law Enforcement",
-  "Revenue & Land Records",
-]
-
-export const DEPARTMENTS = [
-  "Department of Food & Public Distribution",
-  "Ministry of Power",
-  "Ministry of Jal Shakti",
-  "Ministry of Road Transport & Highways",
-  "Ministry of Health & Family Welfare",
-  "Department of School Education & Literacy",
-  "Department of Pension & Pensioners' Welfare",
-  "Ministry of Housing & Urban Affairs",
-  "Ministry of Home Affairs",
-  "Department of Land Resources",
-]
+export const AUTHORITY_DIRECTORY = grievanceTaxonomy
+export const CATEGORIES = grievanceTaxonomy.map((item) => item.category)
+export const DEPARTMENTS = [...new Set(grievanceTaxonomy.flatMap((item) => [
+  item.department,
+  ...(item.centralDepartments || []),
+  ...item.tamilNaduDepartments,
+  ...item.localAuthorities,
+]))]
 
 export const STATES = [
   "Andhra Pradesh",

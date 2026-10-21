@@ -16,6 +16,7 @@ function formatGrievance(item) {
     description: item.description,
     category: item.category,
     department: item.department,
+    aiRecommendation: item.aiRecommendation || null,
     governmentType: item.governmentType,
     state: item.state || "",
     district: item.district || "",
