@@ -1,0 +1,74 @@
+[
+  {
+    "category": "Public Distribution System",
+    "department": "Department of Food & Public Distribution",
+    "tamilNaduDepartments": ["Co-operation, Food and Consumer Protection Department, Tamil Nadu"],
+    "localAuthorities": ["Taluk Civil Supplies Office / Fair Price Shop"],
+    "locationPrompt": "Enter the district, taluk, or fair price shop locality."
+  },
+  {
+    "category": "Electricity & Power",
+    "department": "Ministry of Power",
+    "tamilNaduDepartments": ["Energy Department, Tamil Nadu"],
+    "localAuthorities": ["Electricity distribution office or service provider"],
+    "locationPrompt": "Enter the district and electricity service provider or locality."
+  },
+  {
+    "category": "Water Supply & Sanitation",
+    "department": "Ministry of Jal Shakti",
+    "tamilNaduDepartments": ["Municipal Administration and Water Supply Department, Tamil Nadu", "Rural Development and Panchayat Raj Department, Tamil Nadu"],
+    "localAuthorities": ["Municipal Corporation / Municipality", "Town Panchayat", "Village Panchayat"],
+    "locationPrompt": "Enter the district and municipality, town panchayat, or village panchayat."
+  },
+  {
+    "category": "Roads & Transport",
+    "department": "Ministry of Road Transport & Highways",
+    "tamilNaduDepartments": ["Highways Department, Tamil Nadu"],
+    "localAuthorities": ["Municipal Corporation / Municipality", "Town Panchayat", "Village Panchayat"],
+    "locationPrompt": "Enter the road location and whether it is a national, state, or local road."
+  },
+  {
+    "category": "Health & Family Welfare",
+    "department": "Ministry of Health & Family Welfare",
+    "tamilNaduDepartments": ["Health and Family Welfare Department, Tamil Nadu"],
+    "localAuthorities": ["District Government Hospital / Primary Health Centre"],
+    "locationPrompt": "Enter the district and name or locality of the government health facility."
+  },
+  {
+    "category": "Education",
+    "department": "Department of School Education & Literacy",
+    "centralDepartments": ["Department of Higher Education, Ministry of Education"],
+    "tamilNaduDepartments": ["School Education Department, Tamil Nadu", "Higher Education Department, Tamil Nadu", "Adi Dravidar and Tribal Welfare Department, Tamil Nadu", "Backward Classes, Most Backward Classes and Minorities Welfare Department, Tamil Nadu", "Social Welfare and Women Empowerment Department, Tamil Nadu"],
+    "localAuthorities": ["District Education Office / Government School"],
+    "locationPrompt": "For scholarship grievances, enter the scholarship scheme and district so its administering department can be confirmed."
+  },
+  {
+    "category": "Pension & Retirement Benefits",
+    "department": "Department of Pension & Pensioners' Welfare",
+    "tamilNaduDepartments": ["Finance (Pension) Department, Tamil Nadu", "Social Welfare and Women Empowerment Department, Tamil Nadu", "Revenue and Disaster Management Department, Tamil Nadu"],
+    "localAuthorities": ["District Treasury / Taluk Office"],
+    "locationPrompt": "Enter the pension scheme and district; authority depends on the pension type."
+  },
+  {
+    "category": "Municipal Services",
+    "department": "Ministry of Housing & Urban Affairs",
+    "localAuthorityOnly": true,
+    "tamilNaduDepartments": ["Municipal Administration and Water Supply Department, Tamil Nadu"],
+    "localAuthorities": ["Municipal Corporation", "Municipality", "Town Panchayat", "Village Panchayat"],
+    "locationPrompt": "Enter the district and select/name the municipality, town panchayat, or village panchayat."
+  },
+  {
+    "category": "Police & Law Enforcement",
+    "department": "Ministry of Home Affairs",
+    "tamilNaduDepartments": ["Home, Prohibition and Excise Department, Tamil Nadu"],
+    "localAuthorities": ["District Police / Local Police Station"],
+    "locationPrompt": "Enter the district and police station; central forces and state police have different jurisdiction."
+  },
+  {
+    "category": "Revenue & Land Records",
+    "department": "Department of Land Resources",
+    "tamilNaduDepartments": ["Revenue and Disaster Management Department, Tamil Nadu"],
+    "localAuthorities": ["District Collectorate / Taluk Office / Tahsildar"],
+    "locationPrompt": "Enter the district, taluk, and village or survey locality."
+  }
+]
